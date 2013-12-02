@@ -1,22 +1,39 @@
 #include "GPIOPin.hpp"
 #include <functional>
+#include <chrono>
+#include <cassert>
 #include <wiringPi.h>
+
+using std::function;
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
+using std::chrono::steady_clock;
 
 GPIOPin::GPIOPin(unsigned int number) : number(number)
 {
     wiringPiSetupGpio();
     piHiPri(99);
     pullUpDnControl(number, PUD_DOWN);
-    wiringPiISR(number, INT_EDGE_BOTH, &(this->interruptHandler));
+    wiringPiISR(number, INT_EDGE_BOTH, &GPIOPin::ISR);
+    assert(instance == nullptr);
+    instance = this;
+}
+
+GPIOPin *GPIOPin::instance = nullptr;
+
+void GPIOPin::ISR() {
+    if (instance) {
+        instance->interruptHandler();
+    }
 }
 
 void GPIOPin::interruptHandler() {
     if (this->edgeHandler) {
-        this->edgeHandler(micros());
+        this->edgeHandler(duration_cast<microseconds>(steady_clock::now().time_since_epoch()));
     }
 }
 
-void GPIOPin::setEdgeHandler(std::function<void()> edgeHandler)
+void GPIOPin::setEdgeHandler(function<void(microseconds)> edgeHandler)
 {
     this->edgeHandler = edgeHandler;
 }
