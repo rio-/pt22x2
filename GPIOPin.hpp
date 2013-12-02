@@ -3,9 +3,12 @@
 #include <functional>
 #include <chrono>
 
+using std::function;
+using std::chrono::microseconds;
+
 class GPIOPin {
     private:
-        std::function<void(std::chrono::microseconds)> edgeHandler;
+        function<void(microseconds)> edgeHandler;
         unsigned int number;
         static GPIOPin *instance;
         static void ISR();        
@@ -13,7 +16,7 @@ class GPIOPin {
 
     public:
         GPIOPin(unsigned int number);
-        void setEdgeHandler(std::function<void(std::chrono::microseconds)> edgeHandler);
+        void setEdgeHandler(function<void(microseconds)> edgeHandler);
 };
 
 #endif // GPIOPIN_HPP
