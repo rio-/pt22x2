@@ -2,7 +2,7 @@
 #include <chrono>
 #include <exception>
 #include "GPIOPin.hpp"
-#include "PT226xDecoder.hpp"
+#include "PT22x2Decoder.hpp"
 #include "Command.hpp"
 
 using std::chrono::microseconds;
@@ -10,7 +10,7 @@ using std::cout;
 using std::endl;
 using std::runtime_error;
 
-void codewordHandler(PT226xDecoder::Codeword codeword) {
+void codewordHandler(PT22x2Decoder::Codeword codeword) {
     try {
         Command cmd(codeword);
         cout << cmd << endl;
@@ -20,7 +20,7 @@ void codewordHandler(PT226xDecoder::Codeword codeword) {
 }
 
 int main() {
-    PT226xDecoder decoder(&codewordHandler);
+    PT22x2Decoder decoder(&codewordHandler);
     GPIOPin pin(25);
     
     pin.setEdgeHandler([&decoder] (microseconds time) { decoder.edgeOccured(time); });

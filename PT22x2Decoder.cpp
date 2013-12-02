@@ -1,16 +1,16 @@
-#include "PT226xDecoder.hpp"
+#include "PT22x2Decoder.hpp"
 #include <exception>
 
 using std::chrono::microseconds;
 using std::array;
 using std::runtime_error;
 
-constexpr microseconds PT226xDecoder::pulsewidth_short;
-constexpr microseconds PT226xDecoder::pulsewidth_long;
-constexpr microseconds PT226xDecoder::pulsewidth_sync;
-constexpr microseconds PT226xDecoder::pulsewidth_tolerance;
+constexpr microseconds PT22x2Decoder::pulsewidth_short;
+constexpr microseconds PT22x2Decoder::pulsewidth_long;
+constexpr microseconds PT22x2Decoder::pulsewidth_sync;
+constexpr microseconds PT22x2Decoder::pulsewidth_tolerance;
 
-PT226xDecoder::PT226xDecoder(function<void(PT226xDecoder::Codeword)> codewordHandler) :
+PT22x2Decoder::PT22x2Decoder(function<void(PT22x2Decoder::Codeword)> codewordHandler) :
     lasttime(microseconds(0)),
     receiving(false),
     position(0),
@@ -18,7 +18,7 @@ PT226xDecoder::PT226xDecoder(function<void(PT226xDecoder::Codeword)> codewordHan
 {
 }
 
-void PT226xDecoder::edgeOccured(microseconds time)
+void PT22x2Decoder::edgeOccured(microseconds time)
 {
     microseconds now = time;
     microseconds delta = now - lasttime;
@@ -61,7 +61,7 @@ void PT226xDecoder::edgeOccured(microseconds time)
     }
 }
 
-PT226xDecoder::Codeword PT226xDecoder::codewordFromPulses(PT226xDecoder::CodewordPulses pulses) {
+PT22x2Decoder::Codeword PT22x2Decoder::codewordFromPulses(PT22x2Decoder::CodewordPulses pulses) {
     Codeword codeword;
     for (int i=0; i < codeword_length; i++) {
         if (pulses[4*i]   == Pulse::Short &&

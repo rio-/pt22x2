@@ -1,26 +1,26 @@
 #include "Command.hpp"
-#include "PT226xDecoder.hpp"
+#include "PT22x2Decoder.hpp"
 #include <exception>
 
 using std::runtime_error;
 
-Command::Command(PT226xDecoder::Codeword codeword) :
+Command::Command(PT22x2Decoder::Codeword codeword) :
     system_code(0), channel(0), state(State::Off)
 {
     for (int i=0; i<5; i++) {
-        if (codeword[i] == PT226xDecoder::CodeBit::Zero) {
+        if (codeword[i] == PT22x2Decoder::CodeBit::Zero) {
             system_code |= 1 << i;
         }
-        else if (codeword[i] == PT226xDecoder::CodeBit::One) {
+        else if (codeword[i] == PT22x2Decoder::CodeBit::One) {
             throw runtime_error("malformed command");
         }
     }
 
     for (int i=0; i<4; i++) {
-        if (codeword[i+5] == PT226xDecoder::CodeBit::Zero) {
+        if (codeword[i+5] == PT22x2Decoder::CodeBit::Zero) {
             channel |= 1 << i;
         }
-        else if (codeword[i+5] == PT226xDecoder::CodeBit::One) {
+        else if (codeword[i+5] == PT22x2Decoder::CodeBit::One) {
             throw runtime_error("malformed command");
         }
     }
@@ -29,10 +29,10 @@ Command::Command(PT226xDecoder::Codeword codeword) :
         throw runtime_error("malformed command");
     }
 
-    if (codeword[10] == PT226xDecoder::CodeBit::Floating && codeword[11] == PT226xDecoder::CodeBit::Zero) {
+    if (codeword[10] == PT22x2Decoder::CodeBit::Floating && codeword[11] == PT22x2Decoder::CodeBit::Zero) {
         state = State::Off;
     }
-    else if (codeword[10] == PT226xDecoder::CodeBit::Zero && codeword[11] == PT226xDecoder::CodeBit::Floating) {
+    else if (codeword[10] == PT22x2Decoder::CodeBit::Zero && codeword[11] == PT22x2Decoder::CodeBit::Floating) {
         state = State::On;
     }
     else {

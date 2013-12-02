@@ -1,6 +1,6 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
-#include "PT226xDecoder.hpp"
+#include "PT22x2Decoder.hpp"
 #include <ostream>
 
 class Command {
@@ -9,7 +9,7 @@ class Command {
         unsigned int channel;
         enum class State { Off, On } state;
 
-        Command(PT226xDecoder::Codeword codeword);
+        Command(PT22x2Decoder::Codeword codeword);
 };
 
 std::ostream& operator<<(std::ostream &strm, const Command &cmd);

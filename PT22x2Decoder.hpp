@@ -8,7 +8,7 @@ using std::chrono::microseconds;
 using std::array;
 using std::function;
 
-class PT226xDecoder {
+class PT22x2Decoder {
     public:
         static constexpr microseconds pulsewidth_short = microseconds(322);
         static constexpr microseconds pulsewidth_long  = microseconds(967);
@@ -28,7 +28,7 @@ class PT226xDecoder {
         function<void(Codeword)> codewordHandler;
         
     public:
-        PT226xDecoder(function<void(Codeword)> codewordHandler);
+        PT22x2Decoder(function<void(Codeword)> codewordHandler);
         void edgeOccured(microseconds time);
         Codeword codewordFromPulses(CodewordPulses pulses);
 };
