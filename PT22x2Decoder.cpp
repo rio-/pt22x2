@@ -20,8 +20,8 @@ PT22x2Decoder::PT22x2Decoder(function<void(PT22x2Decoder::Codeword)> codewordHan
 
 void PT22x2Decoder::edgeOccured(microseconds time)
 {
-    microseconds now = time;
-    microseconds delta = now - lasttime;
+    auto now = time;
+    auto delta = now - lasttime;
     lasttime = now;
 
     if (delta >= pulsewidth_sync - pulsewidth_tolerance) {
@@ -52,7 +52,7 @@ void PT22x2Decoder::edgeOccured(microseconds time)
             receiving = false;
             position = 0;
 
-            Codeword codeword = codewordFromPulses(pulses);
+            auto codeword = codewordFromPulses(pulses);
             if (codewordHandler) {
                 codewordHandler(codeword);
             }

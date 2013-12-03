@@ -7,6 +7,7 @@
 
 using std::chrono::microseconds;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::runtime_error;
 
@@ -27,6 +28,6 @@ int main() {
 
     cout << "Receiving signals ..." << endl
          << "(press return to stop)" << endl;
-    std::cin.get();
+    cin.get();
     return 0;
 }
