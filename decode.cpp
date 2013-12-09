@@ -24,7 +24,9 @@ int main() {
     PT22x2Decoder decoder(&codewordHandler);
     GPIOPin pin(25);
     
-    pin.setEdgeHandler([&decoder] (microseconds time) { decoder.edgeOccured(time); });
+    pin.setEdgeHandler([&decoder] (microseconds time) {
+            decoder.edgeOccured(time);
+    });
 
     cout << "Receiving signals ..." << endl
          << "(press return to stop)" << endl;
