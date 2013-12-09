@@ -12,7 +12,6 @@ using std::chrono::steady_clock;
 GPIOPin::GPIOPin(unsigned int number) : number(number)
 {
     wiringPiSetupGpio();
-    piHiPri(99);
     pullUpDnControl(number, PUD_DOWN);
     wiringPiISR(number, INT_EDGE_BOTH, &GPIOPin::ISR);
     assert(instance == nullptr);
