@@ -17,6 +17,10 @@ class GPIOPin {
     public:
         GPIOPin(unsigned int number);
         void setEdgeHandler(function<void(microseconds)> edgeHandler);
+        void setPullDown();
+        void setOutput();
+        void setHigh();
+        void setLow();
 };
 
 #endif // GPIOPIN_HPP

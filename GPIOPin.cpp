@@ -12,13 +12,25 @@ using std::chrono::steady_clock;
 GPIOPin::GPIOPin(unsigned int number) : number(number)
 {
     wiringPiSetupGpio();
-    pullUpDnControl(number, PUD_DOWN);
-    wiringPiISR(number, INT_EDGE_BOTH, &GPIOPin::ISR);
-    assert(instance == nullptr);
-    instance = this;
 }
 
 GPIOPin *GPIOPin::instance = nullptr;
+
+void GPIOPin::setPullDown() {
+    pullUpDnControl(number, PUD_DOWN);
+}
+
+void GPIOPin::setOutput() {
+    pinMode(number, OUTPUT);
+}
+
+void GPIOPin::setHigh() {
+    digitalWrite(number, HIGH);
+}
+
+void GPIOPin::setLow() {
+    digitalWrite(number, LOW);
+}
 
 void GPIOPin::ISR() {
     if (instance) {
@@ -34,5 +46,8 @@ void GPIOPin::interruptHandler() {
 
 void GPIOPin::setEdgeHandler(function<void(microseconds)> edgeHandler)
 {
+    assert(instance == nullptr);
+    instance = this;
     this->edgeHandler = edgeHandler;
+    wiringPiISR(number, INT_EDGE_BOTH, &GPIOPin::ISR);
 }
