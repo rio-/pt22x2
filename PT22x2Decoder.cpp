@@ -52,8 +52,16 @@ void PT22x2Decoder::edgeOccured(microseconds time)
             receiving = false;
             position = 0;
 
-            auto codeword = codewordFromPulses(pulses);
-            if (codewordHandler) {
+            bool got_codeword = false;
+            PT22x2Decoder::Codeword codeword;
+            try {
+                codeword = codewordFromPulses(pulses);
+                got_codeword = true;
+            }
+            catch (runtime_error const &e) {
+            }
+
+            if (got_codeword && codewordHandler) {
                 codewordHandler(codeword);
             }
         }
