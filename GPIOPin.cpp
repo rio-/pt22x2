@@ -9,9 +9,14 @@ using std::chrono::duration_cast;
 using std::chrono::microseconds;
 using std::chrono::steady_clock;
 
+bool GPIOPin::wiringPi_initialized = false;
+
 GPIOPin::GPIOPin(unsigned int number) : number(number)
 {
-    wiringPiSetupGpio();
+    if (!wiringPi_initialized) {
+        wiringPiSetupGpio();
+        wiringPi_initialized = true;
+    }
 }
 
 GPIOPin *GPIOPin::instance = nullptr;

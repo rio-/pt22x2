@@ -10,6 +10,7 @@ class GPIOPin {
     private:
         function<void(microseconds)> edgeHandler;
         unsigned int number;
+        static bool wiringPi_initialized;
         static GPIOPin *instance;
         static void ISR();        
         void interruptHandler();
